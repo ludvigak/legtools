@@ -5,7 +5,7 @@ function A = comrade_matrix(coeff)
 
     N = numel(coeff)-1;
     [alpha, gamma] = recurrence_coeffs(N);
-    A = zeros(N,N);
+    A = zeros(N, N, 'like', coeff);
     %A(1,1) = beta(1);
     A(2,1) = alpha(1);
     for i=2:N-1
