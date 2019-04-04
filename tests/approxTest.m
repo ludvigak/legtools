@@ -14,14 +14,17 @@ N = 35;
 L = legendre.matrix(N);
 [x, w] = legendre.gauss(N);
 c = L*f(x);
+d = legendre.diff(c);
 
 % Approximation
 xtest = linspace(-1, 1, 1000)';
 [P, D] = legendre.deriv_vec(N-1, xtest);
 ferr = norm(P*c - f(xtest), inf) / norm(f(xtest), inf);
 fperr = norm(D*c - fp(xtest), inf) / norm(fp(xtest), inf);
+fperr2 = norm(P(:, 1:N-1)*d - fp(xtest), inf) / norm(fp(xtest), inf);
 assert(ferr < 5e-14)
 assert(fperr < 1e-12)
+assert(fperr2 < 1e-12)
 
 % Quadrature
 Q = sum(f(x).*w);

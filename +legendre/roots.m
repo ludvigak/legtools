@@ -1,5 +1,7 @@
 function r = roots(coeff)
-% Legendre expansion roots, sorted by ascending Berstein radius
+% r = legendre.roots(coeff)
+%
+% Legendre expansion roots, sorted by ascending Bernstein radius
 
 % Get roots
 r = eig(legendre.comrade_matrix(coeff));
