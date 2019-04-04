@@ -1,4 +1,6 @@
 function [t, relres, iter] = newton(c, zr, t0, maxiter, tol)
+% [t, relres, iter] = newton(c, zr, t0, maxiter, tol)
+%
 % Solve p(t)=zr for Legendre approx with coeffs c
 
 % Break if diverging
