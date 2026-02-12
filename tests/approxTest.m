@@ -38,3 +38,20 @@ r = sort(real(r));
 rooterr = norm(r - froots, inf);
 assert(rooterr < 5e-15)
 
+% Cumsum
+gaussian = @(x) 2/sqrt(pi)*exp(-x.^2);
+a = L*gaussian(x);
+b = legendre.cumsum(a);
+cumsum_diff_err = norm(legendre.diff(b)-a, inf) / norm(a, inf);
+assert(cumsum_diff_err < 5e-15)
+
+xtest2 = linspace(0, 1, 200)';
+P2 = legendre.deriv_vec(N, xtest2);
+
+erf_err = norm(P2*b - erf(xtest2), inf) / norm(erf(xtest2), inf);
+assert(erf_err < 5e-15);
+
+clf
+plot(xtest2, P2*b)
+hold on
+plot(xtest2, erf(xtest2))
