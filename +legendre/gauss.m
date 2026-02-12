@@ -1,23 +1,30 @@
-function [x, w] = gauss(N)
-% Gauss-Legendre quadrature 
-    
-% Golub-Welsch
-    % k = 1:N-1;
-    % b = sqrt(1./(4-1./k.^2));
-    % A=zeros(N);
-    % for n=2:N
-    %     A(n,n-1)=b(n-1);
-    %     A(n-1,n)=b(n-1);
-    % end
-    % [V, d] = eig(A, 'vector');
-    % [x, idx] = sort(d);
-    % w = 2*V(1, idx)'.^2;
+function [x, w] = gauss(N, args)
+    arguments
+        N
+        args.vpa=false
+    end
+    % Gauss-Legendre quadrature 
 
-% Newton method (seems to be better)
-    [x, w] = lgwt(N, -1, 1);
+    if args.vpa
+        % Golub-Welsch much faster in VPA
+        k = vpa(1:N-1);
+        b = sqrt(1./(4-1./k.^2));
+        A=zeros(N, 'sym');
+        for n=2:N
+            A(n,n-1)=b(n-1);
+            A(n-1,n)=b(n-1);
+        end
+        [V, D] = eig(A);
+        d = diag(D);
+        [x, idx] = sort(d);
+        w = 2*V(1, idx)'.^2;
+    else
+        % Newton method (seems to be better in double)
+        [x, w] = lgwt(N, -1, 1, args.vpa);
+    end
 end
 
-function [x,w]=lgwt(N,a,b)
+function [x,w]=lgwt(N,a,b,do_vpa)
 % Written by Greg von Winckel - 02/25/2004
 %
 % Copyright (c) 2009, Greg von Winckel 
