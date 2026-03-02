@@ -9,6 +9,9 @@ function P = vec(n, x)
     x = x(:);
     P = zeros(numel(x), n+1, class(x));
     P(:, 1) = ones(size(x), class(x)); % l=0
+    if n==0
+        return
+    end
     P(:, 2) = x; % l=1
     for l=1:n-1
         % Compute l+1
